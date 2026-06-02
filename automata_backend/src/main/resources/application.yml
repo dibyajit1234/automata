@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: engine
+
+  # Database Setup
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fluxly_db
+    username: fluxly_user
+    password: fluxly_password
+    driver-class-name: org.postgresql.Driver
+
+  # Hibernate Setup (Auto-create tables)
+  jpa:
+    hibernate:
+      ddl-auto: update # Creates/updates tables automatically during dev
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
+  # Kafka Setup
+  kafka:
+    bootstrap-servers: localhost:9092
+
+  # Redis Setup
+  data:
+    redis:
+      host: localhost
+      port: 6379
