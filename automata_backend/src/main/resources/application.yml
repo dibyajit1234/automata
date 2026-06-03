@@ -2,6 +2,13 @@ spring:
   application:
     name: engine
 
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          enabled: false
+
   # Database Setup
   datasource:
     url: jdbc:postgresql://localhost:5432/fluxly_db
