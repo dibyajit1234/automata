@@ -19,6 +19,8 @@ public class Workflow {
     @Column(nullable = false)
     private String name;
 
+    private boolean isActive=false;
+
     @OneToMany(mappedBy = "workflow",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<WorkflowSteps> workFlowSteps;
 
