@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
-import org.springframework.boot.jackson.autoconfigure.JacksonProperties;
 
 import java.util.Map;
 import java.util.UUID;
