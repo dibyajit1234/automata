@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class ExecutionService {
 
     private final WorkFlowStepsRepository workFlowStepsRepository;
-
+    private final TemplateEngineService templateEngine;
 
     public void runWorkflow(UUID workflowId, Map<String,Object> payload){
         log.info("Starting workflow execution");
@@ -26,18 +27,21 @@ public class ExecutionService {
             log.warn("workflow has no steps setup exiting {}",workflowId);
             return;
         }
+        Map<String, Object> state = new HashMap<>();
+        state.put("trigger", payload);
         log.info("triggering payload received {}",payload);
         for(WorkflowSteps step:steps){
             if(step.getOrderIndex()==0)continue;
             log.info("Executing step: {} -> action app: {}",step.getOrderIndex(),step.getApp());
-            executeAction(step,payload);
+            executeAction(step,state);
         }
         log.info("workflow execution complete");
     }
-    private void executeAction(WorkflowSteps step, Map<String,Object> payload){
-        Map<String,Object> config = step.getData();
+    private void executeAction(WorkflowSteps step, Map<String,Object> state){
+        Map<String, Object> resolvedData = templateEngine.resolveActionData(step.getData(), state);
         log.info("Simulated API Call to {} ", step.getApp());
-        log.info("Configuration: {}", config);
+        log.info("Raw Configuration (From DB) : {}", step.getData());
+        log.info("Resolved Data (Mapped)      : {}", resolvedData);
 
     }
 }
