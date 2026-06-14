@@ -55,8 +55,8 @@ public class WorkFlowService {
         steps.setWorkflow(workflow);
         steps.setStepType(stepRequest.getStepType());
         steps.setData(stepRequest.getData());
-        steps.setStepType(stepRequest.getStepType());
         steps.setApp(stepRequest.getApp());
+        steps.setHeaders(stepRequest.getHeaders());
         steps.setOrderIndex(nextOrderIndex);
         WorkflowSteps finalStep = workFlowStepsRepository.save(steps);
         return mapToStep(finalStep);
@@ -68,6 +68,7 @@ public class WorkFlowService {
         step.setApp(steps.getApp());
         step.setData(steps.getData());
         step.setOrderIndex(steps.getOrderIndex());
+        step.setHeaders(steps.getHeaders());
         return step;
     }
 }

@@ -8,4 +8,6 @@ public class AddStepRequest {
     private String stepType;
     private String app;
     private Map<String,Object> data;
+    private Map<String,Object> headers;
+
 }

@@ -36,4 +36,8 @@ public class WorkflowSteps {
     @Column(nullable = false,columnDefinition = "jsonb")
     private Map<String, Object> data;
 
+    @Column(columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String,Object> headers;
+
 }

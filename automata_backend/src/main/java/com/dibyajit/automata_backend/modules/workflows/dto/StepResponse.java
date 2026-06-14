@@ -11,4 +11,5 @@ public class StepResponse {
     private int orderIndex;
     private String app;
     private Map<String,Object> data;
+    private Map<String,Object> headers;
 }

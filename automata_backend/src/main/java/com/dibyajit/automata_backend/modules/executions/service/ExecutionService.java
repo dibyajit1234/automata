@@ -18,6 +18,7 @@ public class ExecutionService {
 
     private final WorkFlowStepsRepository workFlowStepsRepository;
     private final TemplateEngineService templateEngine;
+    private final ActionExecutorService actionExecutor;
 
     public void runWorkflow(UUID workflowId, Map<String,Object> payload){
         log.info("Starting workflow execution");
@@ -39,7 +40,7 @@ public class ExecutionService {
     }
     private void executeAction(WorkflowSteps step, Map<String,Object> state){
         Map<String, Object> resolvedData = templateEngine.resolveActionData(step.getData(), state);
-        log.info("Simulated API Call to {} ", step.getApp());
+        actionExecutor.execute(step.getApp(),resolvedData);
         log.info("Raw Configuration (From DB) : {}", step.getData());
         log.info("Resolved Data (Mapped)      : {}", resolvedData);
 
