@@ -10,7 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -19,36 +22,24 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "execution_logs")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExecutionLog {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "run_id", nullable = false)
-    private ExecutionRun run;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "step_id")
-    private WorkflowSteps step;
-
-    @Column(nullable = false)
+    private UUID workflowId;
     private String status;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "request_data", columnDefinition = "jsonb")
-    private Map<String, Object> requestData;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "response_data", columnDefinition = "jsonb")
-    private Map<String, Object> responseData;
-
-    @Column(name = "error_message", columnDefinition = "text")
+    @Column(columnDefinition = "TEXT")
     private String errorMessage;
+    private LocalDateTime startedAt;
+    private LocalDateTime completedAt;
 
-    @Column(name = "executed_at", nullable = false, updatable = false)
-    private LocalDateTime executedAt = LocalDateTime.now();
+    @Column(columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String,Object> triggerPayload;
 }
