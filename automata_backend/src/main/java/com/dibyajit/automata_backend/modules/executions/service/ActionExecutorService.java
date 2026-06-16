@@ -33,7 +33,7 @@ public class ActionExecutorService {
             var request = restClient.post()
                     .uri(targetUrl)
                     .contentType(MediaType.APPLICATION_JSON);
-            if(headers!=null)headers.forEach((key,value)->request.header((key,value));
+            if(headers!=null)headers.forEach(request::header);
 
 
             String response = request.body(resolvedData)

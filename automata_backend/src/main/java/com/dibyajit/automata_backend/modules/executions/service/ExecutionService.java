@@ -19,6 +19,7 @@ public class ExecutionService {
     private final WorkFlowStepsRepository workFlowStepsRepository;
     private final TemplateEngineService templateEngine;
     private final ActionExecutorService actionExecutor;
+    private final FilterService filterService;
 
     public void runWorkflow(UUID workflowId, Map<String,Object> payload){
         log.info("Starting workflow execution");
@@ -33,6 +34,16 @@ public class ExecutionService {
         log.info("triggering payload received {}",payload);
         for(WorkflowSteps step:steps){
             if(step.getOrderIndex()==0)continue;
+            if("filter".equalsIgnoreCase(step.getStepType())){
+                log.info("evaluating step filter : {}",step.getOrderIndex());
+                boolean passed = filterService.evaluate(step.getData(),state);
+                if(!passed){
+                    log.warn("filter condition not met :{}, halting the execution",step.getOrderIndex());
+                    break;
+                }
+                log.info("filter condition passed, moving on to next step ...");
+                continue;
+            }
             log.info("Executing step: {} -> action app: {}",step.getOrderIndex(),step.getApp());
             executeAction(step,state);
         }
